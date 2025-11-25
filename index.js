@@ -51,6 +51,24 @@ app.get('/jokebook/joke/:category', (req, res) => {
   res.json(jokes[randomIndex]);
 });
 
+app.post('/jokebook/joke/:category', (req, res) => {
+  const category = req.params.category;
+  const newJoke = req.body;
+
+  if (!newJoke.joke || !newJoke.response) {
+    return res.status(400).json({ error: 'invalid joke format' });
+  }
+
+  if (category === 'funnyJoke') {
+    funnyJoke.push(newJoke);
+    return res.json({ success: `joke added to category ${category}` });
+  } else if (category === 'lameJoke') {
+    lameJoke.push(newJoke);
+    return res.json({ success: `joke added to category ${category}` });
+  } else {
+    return res.json({ error: `no jokes for category ${category}` });
+  }
+});
 
 
 const PORT = process.env.PORT || 5000;
